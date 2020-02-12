@@ -69,6 +69,8 @@ func (netstringLengthSpecifierTooLarge) Error() string {
 // ReadNetStringsFromStream picks byte by byte aiming to split all bytes into length, ':', the
 // actual message and ',' and return the message.
 func ReadNetStringFromStream(stream io.Reader, maxMessageLength int) ([]byte, error) {
+	stream = CompleteReader{stream}
+
 	length := 0
 	leadingZero := false
 	for readBytes := 0; ; readBytes++ {
