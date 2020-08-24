@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"encoding/hex"
 	"encoding/json"
 	"flag"
 	"fmt"
@@ -112,7 +113,8 @@ func main() {
 		}
 
 		for _, endpoint := range endpoints {
-			if errET := tmplt.Execute(out, &struct{ Name string }{endpoint}); errET != nil {
+			errET := tmplt.Execute(out, &struct{ Name, NameHex string }{endpoint, hex.EncodeToString([]byte(endpoint))})
+			if errET != nil {
 				fmt.Fprintln(os.Stderr, errET.Error())
 				os.Exit(1)
 			}
